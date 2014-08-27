@@ -13,7 +13,10 @@ public class Cnst {
 	public static final int COLOR_BLUE = 2;
 	public static final int COLOR_YELLOW = 3;
 	
-	public static final int TILE_SIZE = 50;
-	public static final int X0_TILE = 0;
-	public static final int Y0_TILE = 0;
+	public static final int TILE_SIZE = 80;
+	public static final int PLAYER_HIGHT = 80;
+	public static final int PLAYER_WIDTH = 80;
+	
+	public static final int X0_TILES = 0;
+	public static final int Y0_TILES = 0;
 }

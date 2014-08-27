@@ -1,5 +1,9 @@
 package com.skula.pingouins.services;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import com.skula.pingouins.enums.Timeline;
 import com.skula.pingouins.models.Auk;
 import com.skula.pingouins.models.Board;
@@ -26,18 +30,27 @@ public class GameEngine {
 	}
 
 	public GameEngine(int nPlayers) {
+		this.board = new Board();
+		this.board.shuffleTiles();
+		
 		this.nPlayers = nPlayers;
-		this.setAuksCount();
+		if (nPlayers == 2) {
+			nAuks = 4;
+		} else if (nPlayers == 3) {
+			nAuks = 3;
+		} else {
+			nAuks = 2;
+		}
 		this.leftToPosition = 0;
 		this.players = new Player[nPlayers];
 		for (int i = 0; i < nPlayers; i++) {
 			players[i] = new Player(nAuks, i);
 		}
+		this.pToken = 0;
 
 		// this.timeline = Timeline.CHOOSE_COLOR;
 		this.timeline = Timeline.POSITIONING;
-		this.pToken = 0;
-
+		
 		clearSrcPosition();
 		clearDestPosition();
 	}
@@ -117,17 +130,7 @@ public class GameEngine {
 		}
 	}
 
-	private void setAuksCount() {
-		if (nPlayers == 2) {
-			nAuks = 4;
-		} else if (nPlayers == 3) {
-			nAuks = 3;
-		} else {
-			nAuks = 2;
-		}
-	}
-
-	public boolean isEndOfMatch() {
+	private boolean isEndOfMatch() {
 		for (int i = 0; i < nPlayers; i++) {
 			for (int j = 0; j < nAuks; j++) {
 				if (!board.isBlocked(players[i].getAuk(j))) {
@@ -138,7 +141,7 @@ public class GameEngine {
 		return true;
 	}
 
-	public void nextPlayer() {
+	private void nextPlayer() {
 		boolean tmp = false;
 		while (!tmp) {
 			if (pToken == nPlayers - 1) {
@@ -150,6 +153,15 @@ public class GameEngine {
 				tmp = true;
 			}
 		}
+	}
+	
+	public List<Player> getScore(){
+		List<Player> res = new ArrayList<Player>();
+		for(int i=0; i<nPlayers; i++){
+			res.add(players[i]);
+		}
+		Collections.sort(res);
+		return res;
 	}
 
 	public Tile getTile(int x, int y) {

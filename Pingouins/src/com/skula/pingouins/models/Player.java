@@ -1,6 +1,6 @@
 package com.skula.pingouins.models;
 
-public class Player {
+public class Player implements Comparable<Player>{
 
 	private int nAuks;
 	private Auk[] auks;
@@ -73,5 +73,18 @@ public class Player {
 
 	public void setBlocked(boolean blocked) {
 		this.blocked = blocked;
+	}
+	
+	@Override
+	public int compareTo(Player o) {
+		if(o.getFishCount()>this.getFishCount()){
+			return 1;
+		}
+		
+		if(o.getFishCount()<this.getFishCount()){
+			return -1;
+		}
+		
+		return 0;
 	}
 }
