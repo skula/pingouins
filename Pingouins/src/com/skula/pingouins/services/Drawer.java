@@ -30,7 +30,7 @@ public class Drawer {
 
 	public void draw(Canvas c) {
 		drawTiles(c);
-		drawPlayer(c, new Rect(0,0,100, 100), R.drawable.auk_blue);
+		drawPlayer(c, new Rect(0+12,0,100+12, 100), R.drawable.auk_blue);
 		drawKeys(c);
 		c.drawText(message, 1050, 700, paint);
 		//drawPlayers(c);
