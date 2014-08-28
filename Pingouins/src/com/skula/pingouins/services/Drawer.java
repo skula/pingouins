@@ -24,11 +24,14 @@ public class Drawer {
 
 	public void draw(Canvas c) {
 		drawTiles(c);
+		drawPlayer(c, new Rect(0,0,100, 100), R.drawable.auk_blue);
 		//drawPlayers(c);
 		//drawScore(c);
 	}
 
-	public void drawTiles(Canvas c) {
+	private void drawTiles(Canvas c) {
+		int dx=0;
+		int dy = 28;
 		int x = Cnst.X0_TILES;
 		int y = Cnst.Y0_TILES;
 		Rect rect = null;
@@ -36,31 +39,31 @@ public class Drawer {
 			int cpt = Cnst.COLUMN_COUNT;
 			x=0;
 			if (j % 2 != 0) {
-				x += Cnst.TILE_SIZE / 2;
+				x += 125 / 2;
 				cpt--;
 			}
 			for (int i = 0; i < cpt; i++) {
-				rect = new Rect(x,y,x+Cnst.TILE_SIZE, y+Cnst.TILE_SIZE);
+				rect = new Rect(x,y,x+125, y+115);
 				switch (engine.getTile(i, j).getFishCount()) {
 				case 1:
-					drawBitmap(c, rect, R.drawable.nfish1);
+					drawAuk(c, rect, R.drawable.nfish1);
 					break;
 				case 2:
-					drawBitmap(c, rect, R.drawable.nfish2);
+					drawAuk(c, rect, R.drawable.nfish2);
 					break;
 				case 3:
-					drawBitmap(c, rect, R.drawable.nfish3);
+					drawAuk(c, rect, R.drawable.nfish3);
 					break;
 				default:
 					break;
 				}
-				x += Cnst.TILE_SIZE;
+				x += 125-dx;
 			}
-			y += Cnst.TILE_SIZE;
+			y += 115-dy;
 		}
 	}
 
-	public void drawPlayers(Canvas c) {
+	private void drawPlayers(Canvas c) {
 		Rect rect = null;
 		for (int i = 0; i < engine.getnPlayers(); i++) {
 			for (int j = 0; j < engine.getnAuks(); j++) {
@@ -69,14 +72,18 @@ public class Drawer {
 		}
 	}
 
-	public void drawScore(Canvas c) {
+	private void drawScore(Canvas c) {
 		for (Player p: engine.getScore()) {
 
 		}
 	}
 	
-	private void drawBitmap(Canvas canvas, Rect rect, int id) {
-		canvas.drawBitmap(getPict(id), new Rect(0,0, Cnst.TILE_SIZE, Cnst.TILE_SIZE), rect, null);
+	private void drawAuk(Canvas canvas, Rect rect, int id) {
+		canvas.drawBitmap(getPict(id), new Rect(0,0, Cnst.TILE_WIDHT, Cnst.TILE_HIGHT), rect, null);
+	}
+	
+	private void drawPlayer(Canvas canvas, Rect rect, int id) {
+		canvas.drawBitmap(getPict(id), new Rect(0,0, Cnst.PLAYER_WIDTH, Cnst.PLAYER_HIGHT), rect, null);
 	}
 
 	private Bitmap getPict(int id) {
