@@ -63,7 +63,7 @@ public class BoardView extends View {
 			}
 			y0 += 115 - dy;
 		}
-		drawer.setMessage("caca");
+		drawer.setMessage("null");
 	}
 
 	@Override
