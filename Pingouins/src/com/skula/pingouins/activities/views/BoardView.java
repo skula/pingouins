@@ -13,11 +13,15 @@ import com.skula.pingouins.services.GameEngine;
 public class BoardView extends View {
 	private Drawer drawer;
 	private GameEngine engine;
+	private int xTile;
+	private int yTile;
 
 	public BoardView(Context context) {
 		super(context);
 		this.engine = new GameEngine(2);
 		this.drawer = new Drawer(context.getResources(), engine);
+		this.xTile = -1;
+		this.yTile = -1;
 	}
 
 	@Override
@@ -33,14 +37,32 @@ public class BoardView extends View {
 
 			break;
 		case MotionEvent.ACTION_UP:
-			getTile(x, y);
+			if (getTile(x, y)) {
+				if (!engine.isSrcSelected()) {
+					engine.setSrcPos(xTile, yTile);
+					if(engine.canProcess()){
+						engine.process();
+					}
+				} else {
+					if (!engine.isDestSelected()) {
+						engine.setDestPos(xTile, yTile);
+						if(engine.canProcess()){
+							engine.process();
+						}
+					}else{
+						
+					}
+				}
+			}else{
+				
+			}
 			invalidate();
 			break;
 		}
 		return true;
 	}
 
-	public void getTile(int x, int y) {
+	public boolean getTile(int x, int y) {
 		int dx = 0;
 		int dy = 28;
 		int x0 = Cnst.X0_TILES;
@@ -56,14 +78,19 @@ public class BoardView extends View {
 			for (int i = 0; i < cpt; i++) {
 				rect = new Rect(x0, y0 + 15, x0 + 125, y0 + 115 - 15);
 				if (rect.contains(x, y)) {
-					drawer.setMessage("(" + i + "," + j + ")");
-					return;
+					engine.setMessage("(" + i + "," + j + ")");
+					xTile = i;
+					yTile = j;
+					return true;
 				}
 				x0 += 125 - dx;
 			}
 			y0 += 115 - dy;
 		}
-		drawer.setMessage("null");
+		engine.setMessage("null");
+		xTile = -1;
+		yTile = -1;
+		return false;
 	}
 
 	@Override

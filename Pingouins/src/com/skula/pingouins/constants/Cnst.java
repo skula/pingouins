@@ -11,7 +11,7 @@ public class Cnst {
 	public static final int COLOR_RED = 0;
 	public static final int COLOR_GREEN = 1;
 	public static final int COLOR_BLUE = 2;
-	public static final int COLOR_YELLOW = 3;
+	public static final int COLOR_BLACK = 3;
 	
 	public static final int TILE_WIDHT = 100;
 	public static final int TILE_HIGHT = 92;

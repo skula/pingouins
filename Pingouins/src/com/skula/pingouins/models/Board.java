@@ -11,14 +11,6 @@ import com.skula.pingouins.enums.Direction;
 public class Board {
 	private Tile[][] tiles;
 
-	public static void main(String[] args) {
-		Board board = new Board();
-		board.mockTiles();
-		board.show();
-
-		System.out.println(board.isBlocked(new Auk(5, 2)));
-	}
-
 	public Board() {
 		this.tiles = new Tile[Cnst.ROW_COUNT][Cnst.COLUMN_COUNT];
 	}

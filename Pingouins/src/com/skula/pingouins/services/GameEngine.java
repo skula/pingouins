@@ -24,15 +24,13 @@ public class GameEngine {
 	private int xDest;
 	private int yDest;
 
-	public static void main(String[] args) {
-		GameEngine ge = new GameEngine(2);
-		System.out.println("");
-	}
+	private String message;
 
 	public GameEngine(int nPlayers) {
+		this.message = "";
 		this.board = new Board();
 		this.board.shuffleTiles();
-		
+
 		this.nPlayers = nPlayers;
 		if (nPlayers == 2) {
 			nAuks = 4;
@@ -50,7 +48,7 @@ public class GameEngine {
 
 		// this.timeline = Timeline.CHOOSE_COLOR;
 		this.timeline = Timeline.POSITIONING;
-		
+
 		clearSrcPosition();
 		clearDestPosition();
 	}
@@ -58,7 +56,7 @@ public class GameEngine {
 	public boolean canProcess() {
 		switch (timeline) {
 		case POSITIONING:
-			return xDest != -1 && yDest != -1;
+			return xSrc != -1 && ySrc != -1;
 		case MOVEMENT:
 			return xSrc != -1 && ySrc != -1 && xDest != -1 && yDest != -1;
 		case SCORE:
@@ -71,19 +69,22 @@ public class GameEngine {
 	}
 
 	public void process() {
+		Auk auk = null;
 		switch (timeline) {
 		case POSITIONING:
 			// boucler tant que tous les pingouins ne sont pas positionnes
 			// correctement
-			if (!board.isPositionable(xDest, yDest)) {
+			if (!board.isPositionable(xSrc, ySrc)) {
 				clearSrcPosition();
 				clearDestPosition();
 				break;
 			}
 
-			players[pToken].getAuk(leftToPosition / nPlayers)
-					.move(xDest, yDest);
-			board.setTakenTile(xDest, yDest);
+			int n = leftToPosition / nPlayers;
+			auk = players[pToken].getAuk(n);
+			auk.move(xDest, yDest);
+			auk.setInGame(true);
+			board.setTakenTile(xSrc, ySrc);
 			leftToPosition++;
 			nextPlayer();
 			if (leftToPosition == nPlayers * nAuks) {
@@ -94,7 +95,7 @@ public class GameEngine {
 			break;
 		case MOVEMENT:
 			// TODO: boucler tant que tous les pingouins ne sont pas bloques
-			Auk auk = players[pToken].getAuk(xSrc, ySrc);
+			auk = players[pToken].getAuk(xSrc, ySrc);
 			if (auk == null || !board.canMove(xSrc, ySrc, xDest, yDest)) {
 				clearSrcPosition();
 				clearDestPosition();
@@ -154,10 +155,10 @@ public class GameEngine {
 			}
 		}
 	}
-	
-	public List<Player> getScore(){
+
+	public List<Player> getScore() {
 		List<Player> res = new ArrayList<Player>();
-		for(int i=0; i<nPlayers; i++){
+		for (int i = 0; i < nPlayers; i++) {
 			res.add(players[i]);
 		}
 		Collections.sort(res);
@@ -234,5 +235,13 @@ public class GameEngine {
 
 	public void setnAuks(int nAuks) {
 		this.nAuks = nAuks;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 }

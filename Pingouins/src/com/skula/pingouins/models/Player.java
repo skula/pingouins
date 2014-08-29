@@ -23,6 +23,9 @@ public class Player implements Comparable<Player>{
 
 	public Player(int nAuks, int color) {
 		this.auks = new Auk[nAuks];
+		for(int i=0; i<nAuks; i++){
+			auks[i]=new Auk();
+		}
 		this.color = color;
 	}
 
