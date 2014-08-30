@@ -22,20 +22,35 @@ public class Drawer {
 		this.res = res;
 		this.paint = new Paint();
 		paint.setColor(Color.RED);
-		paint.setTextSize(40f);
-		paint.setStyle(Paint.Style.STROKE);
+		paint.setTextSize(30f);
+		//paint.setStyle(Paint.Style.STROKE);
 	}
 
 	public void draw(Canvas c) {
 		drawTiles(c);
 		// drawAuk(c, new Rect(0+12,0,100+12, 100), R.drawable.auk_blue);
-		drawKeys(c);
-		c.drawText(engine.getMessage(), 1050, 700, paint);
+		// drawKeys(c);
+		if(engine.isSrcSelected()){
+			drawSrcKeys(c);
+		}
+		c.drawText(engine.getMessage(), 980, 700, paint);
 		drawPlayers(c);
 		// drawScore(c);
 	}
+	
+	private void drawSrcKeys(Canvas c) {
+		int x0 = engine.getxSrc() * 125;
+		int y0 = engine.getySrc() * (115 - 28);
+		if (engine.getySrc() % 2 != 0) {
+			x0 += 125 / 2;
+		}
+		x0 += 22;
+		y0 += 4;
+		c.drawRect(new Rect(x0, y0, x0 + Cnst.PLAYER_WIDTH, y0 + Cnst.PLAYER_HIGHT), paint);
+	}
 
 	private void drawKeys(Canvas c) {
+		
 		int dx = 0;
 		int dy = 28;
 		int x = Cnst.X0_TILES;
@@ -96,7 +111,19 @@ public class Drawer {
 		for (int i = 0; i < engine.getnPlayers(); i++) {
 			for (int j = 0; j < engine.getnAuks(); j++) {
 				if (engine.getPlayers()[i].getAuk(j).isInGame()) {
-					rect = new Rect(i, j, i + 125, j + 115);
+					int x = engine.getPlayers()[i].getAuk(j).getxPos();
+					int y = engine.getPlayers()[i].getAuk(j).getyPos();
+					int x0 = x * 125;
+					int y0 = y * (115 - 28);
+					if (y % 2 != 0) {
+						x0 += 125 / 2;
+					}
+
+					x0 += 22;
+					y0 += 4;
+
+					rect = new Rect(x0, y0, x0 + Cnst.PLAYER_WIDTH, y0
+							+ Cnst.PLAYER_HIGHT);
 					switch (engine.getPlayers()[i].getColor()) {
 					case Cnst.COLOR_BLUE:
 						drawAuk(c, rect, R.drawable.auk_blue);
@@ -125,7 +152,7 @@ public class Drawer {
 	}
 
 	private void drawTile(Canvas canvas, Rect rect, int id) {
-		canvas.drawBitmap(getPict(id), new Rect(0, 0, Cnst.TILE_WIDHT,
+		canvas.drawBitmap(getPict(id), new Rect(0, 0, Cnst.TILE_WIDTH,
 				Cnst.TILE_HIGHT), rect, null);
 	}
 

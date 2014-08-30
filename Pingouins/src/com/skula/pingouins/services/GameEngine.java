@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.skula.pingouins.constants.Cnst;
 import com.skula.pingouins.enums.Timeline;
 import com.skula.pingouins.models.Auk;
 import com.skula.pingouins.models.Board;
@@ -51,14 +52,49 @@ public class GameEngine {
 
 		clearSrcPosition();
 		clearDestPosition();
+		
+		setMessage();
+	}
+	
+	public void setMessage(){
+		String color = Cnst.getPictureLabel(players[pToken].getColor());
+		
+		switch (timeline) {
+		case POSITIONING:
+			message = "Joueur " + color + " place";
+			break;
+		case MOVEMENT:
+			message = "Joueur " + color + " deplace";
+			break;
+		default:
+			break;
+		}
 	}
 
 	public boolean canProcess() {
 		switch (timeline) {
 		case POSITIONING:
-			return xSrc != -1 && ySrc != -1;
+			if(!isSrcSelected()){
+				return false;
+			}
+			
+			if (!board.isPositionable(xSrc, ySrc)) {
+				clearSrcPosition();
+				clearDestPosition();
+				return false;
+			}
+			return true;
 		case MOVEMENT:
-			return xSrc != -1 && ySrc != -1 && xDest != -1 && yDest != -1;
+			if(!isDestSelected()){
+				return false;
+			}
+			Auk auk = players[pToken].getAuk(xSrc, ySrc);
+			if (auk == null || !board.canMove(xSrc, ySrc, xDest, yDest)) {
+				clearSrcPosition();
+				clearDestPosition();
+				return false;
+			}
+			return true;
 		case SCORE:
 			return true;
 		case END:
@@ -72,36 +108,22 @@ public class GameEngine {
 		Auk auk = null;
 		switch (timeline) {
 		case POSITIONING:
-			// boucler tant que tous les pingouins ne sont pas positionnes
-			// correctement
-			if (!board.isPositionable(xSrc, ySrc)) {
-				clearSrcPosition();
-				clearDestPosition();
-				break;
-			}
-
 			int n = leftToPosition / nPlayers;
 			auk = players[pToken].getAuk(n);
-			auk.move(xDest, yDest);
+			auk.move(xSrc, ySrc);
 			auk.setInGame(true);
 			board.setTakenTile(xSrc, ySrc);
 			leftToPosition++;
 			nextPlayer();
 			if (leftToPosition == nPlayers * nAuks) {
 				timeline = Timeline.MOVEMENT;
-				clearSrcPosition();
-				clearDestPosition();
 			}
+			clearSrcPosition();
+			clearDestPosition();
+			setMessage();
 			break;
 		case MOVEMENT:
-			// TODO: boucler tant que tous les pingouins ne sont pas bloques
 			auk = players[pToken].getAuk(xSrc, ySrc);
-			if (auk == null || !board.canMove(xSrc, ySrc, xDest, yDest)) {
-				clearSrcPosition();
-				clearDestPosition();
-				break;
-			}
-
 			auk.move(xDest, yDest);
 			board.setTakenTile(xDest, yDest);
 			players[pToken].fish(board.emptyTile(xSrc, ySrc));
@@ -109,6 +131,9 @@ public class GameEngine {
 			if (isEndOfMatch()) {
 				timeline = Timeline.SCORE;
 			}
+			clearSrcPosition();
+			clearDestPosition();
+			setMessage();
 			break;
 		case SCORE:
 			// TODO: ajouter les poissons sous les pingouins
@@ -243,5 +268,21 @@ public class GameEngine {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public int getxSrc() {
+		return xSrc;
+	}
+
+	public int getySrc() {
+		return ySrc;
+	}
+
+	public int getxDest() {
+		return xDest;
+	}
+
+	public int getyDest() {
+		return yDest;
 	}
 }

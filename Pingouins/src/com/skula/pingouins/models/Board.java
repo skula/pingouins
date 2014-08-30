@@ -24,7 +24,7 @@ public class Board {
 		return true;
 	}
 
-	public boolean isBlocked(Auk auk) {
+	public boolean isBlocked2(Auk auk) {
 		int x = auk.getxPos();
 		int y = auk.getyPos();
 
@@ -57,6 +57,52 @@ public class Board {
 		return cpt == 0;
 	}
 
+	public boolean isBlocked(Auk auk) {
+		int x = auk.getxPos();
+		int y = auk.getyPos();
+		int cpt = 0;
+
+		if (y - 1 >= 0) {
+			cpt += tiles[x][y - 1] != null ? tiles[x][y - 1].getFishCount() : 0; // haut
+		}
+
+		if (x + 1 < Cnst.COLUMN_COUNT) {
+			cpt += tiles[x + 1][y] != null ? tiles[x + 1][y].getFishCount() : 0;
+		}
+
+		if (x - 1 >= 0) {
+			cpt += tiles[x - 1][y] != null ? tiles[x - 1][y].getFishCount() : 0; // gauche
+		}
+
+		if (y + 1 < Cnst.ROW_COUNT) {
+			cpt += tiles[x][y + 1] != null ? tiles[x][y + 1].getFishCount() : 0; // bas
+		}
+
+		if (y % 2 != 0) { // ligne de 7 tuiles
+			if (x + 1 < Cnst.COLUMN_COUNT && y - 1 >= 0) {
+				cpt += tiles[x + 1][y - 1] != null ? tiles[x + 1][y - 1]
+						.getFishCount() : 0; // haut droit
+			}
+
+			if (x + 1 < Cnst.COLUMN_COUNT && y + 1 < Cnst.ROW_COUNT) {
+				cpt += tiles[x + 1][y + 1] != null ? tiles[x + 1][y + 1]
+						.getFishCount() : 0; // bas droite
+			}
+		} else {
+			if (x - 1 >= 0 && y - 1 >= 0) {
+				cpt = tiles[x - 1][y - 1] != null ? tiles[x - 1][y - 1]
+						.getFishCount() : 0; // haut gauche
+			}
+
+			if (x - 1 >= 0 && y + 1 < Cnst.ROW_COUNT) {
+				cpt += tiles[x - 1][y + 1] != null ? tiles[x - 1][y + 1]
+						.getFishCount() : 0; // bas gauche
+			}
+		}
+
+		return cpt == 0;
+	}
+
 	public void mockTiles() {
 		for (int j = 0; j < Cnst.COLUMN_COUNT; j++) {
 			for (int i = 0; i < Cnst.ROW_COUNT; i++) {
@@ -84,10 +130,7 @@ public class Board {
 	}
 
 	private boolean isReachable(int x0, int y0, int x1, int y1) {
-		tiles[x0][y0].setFishCount(8);
-		tiles[x1][y1].setFishCount(5);
 		Direction dir = Direction.getDirection(x0, y0, x1, y1);
-		System.out.println(dir);
 		boolean tmp = true;
 		if (dir.isForbidden()) {
 			return false;
@@ -101,8 +144,6 @@ public class Board {
 			case NORTH_EAST:
 				for (int j = y0 - 1, i = x0 + 1; j >= 0
 						&& i < Cnst.COLUMN_COUNT && tiles[i][j] != null; j--) {
-					tiles[i][j].setFishCount(6);
-					System.out.println("i=" + i + ", j=" + j);
 					if (x1 == i && y1 == j) {
 						return true;
 					}
@@ -114,8 +155,6 @@ public class Board {
 				break;
 			case NORTH_WEST:
 				for (int i = x0, j = y0 - 1; j >= 0 && i >= 0; j--) {
-					tiles[i][j].setFishCount(6);
-					System.out.println("i=" + i + ", j=" + j);
 					if (x1 == i && y1 == j) {
 						return true;
 					}
@@ -128,8 +167,6 @@ public class Board {
 			case SOUTH_EAST:
 				for (int i = x0 + 1, j = y0 + 1; j < Cnst.ROW_COUNT
 						&& i < Cnst.COLUMN_COUNT && tiles[i][j] != null; j++) {
-					tiles[i][j].setFishCount(6);
-					System.out.println("i=" + i + ", j=" + j);
 					if (x1 == i && y1 == j) {
 						return true;
 					}
@@ -141,8 +178,6 @@ public class Board {
 				break;
 			case SOUTH_WEST:
 				for (int i = x0, j = y0 + 1; j < Cnst.ROW_COUNT && i >= 0; j++) {
-					tiles[i][j].setFishCount(6);
-					System.out.println("i=" + i + ", j=" + j);
 					if (x1 == i && y1 == j) {
 						return true;
 					}
@@ -160,7 +195,6 @@ public class Board {
 			case NORTH_EAST:
 				for (int j = y0 - 1, i = x0; j >= 0 && i < Cnst.COLUMN_COUNT
 						&& tiles[i][j] != null; j--) {
-					tiles[i][j].setFishCount(6);
 					if (i == x1 && j == y1) {
 						return true;
 					}
@@ -172,8 +206,6 @@ public class Board {
 				break;
 			case NORTH_WEST:
 				for (int j = y0 - 1, i = x0 - 1; j >= 0 && i >= 0; j--) {
-					tiles[i][j].setFishCount(6);
-					System.out.println("i=" + i + ", j=" + j);
 					if (x1 == i && y1 == j) {
 						return true;
 					}
@@ -186,8 +218,6 @@ public class Board {
 			case SOUTH_EAST:
 				for (int i = x0, j = y0 + 1; j < Cnst.ROW_COUNT
 						&& i < Cnst.COLUMN_COUNT && tiles[i][j] != null; j++) {
-					tiles[i][j].setFishCount(6);
-					System.out.println("i=" + i + ", j=" + j);
 					if (x1 == i && y1 == j) {
 						return true;
 					}
@@ -199,8 +229,6 @@ public class Board {
 				break;
 			case SOUTH_WEST:
 				for (int i = x0 - 1, j = y0 + 1; j < Cnst.ROW_COUNT && i >= 0; j++) {
-					tiles[i][j].setFishCount(6);
-					System.out.println("i=" + i + ", j=" + j);
 					if (x1 == i && y1 == j) {
 						return true;
 					}
@@ -221,8 +249,6 @@ public class Board {
 	private boolean isCollision(int x0, int y0, int x1, int y1) {
 		int dx = x1 - x0;
 		int dy = y1 - y0;
-		tiles[x0][y0].setFishCount(8);
-		tiles[x1][y1].setFishCount(5);
 		Direction dir = Direction.getDirection(x0, y0, x1, y1);
 
 		if (dir.equals(Direction.EAST)) {
@@ -230,7 +256,6 @@ public class Board {
 				if (!tiles[i][y0].isSafe()) {
 					return false;
 				}
-				tiles[i][y0].setFishCount(6);
 			}
 			return true;
 		}
@@ -239,7 +264,6 @@ public class Board {
 				if (!tiles[i][y0].isSafe()) {
 					return false;
 				}
-				tiles[i][y0].setFishCount(6);
 			}
 			return true;
 		}
@@ -283,7 +307,6 @@ public class Board {
 				if (!tiles[i][y0].isSafe()) {
 					return false;
 				}
-				tiles[i][j].setFishCount(6);
 				if (tmp) {
 					i = incr ? i + 1 : i - 1;
 				}
@@ -294,7 +317,6 @@ public class Board {
 				if (!tiles[i][y0].isSafe()) {
 					return false;
 				}
-				tiles[i][j].setFishCount(6);
 				if (tmp) {
 					i = incr ? i + 1 : i - 1;
 				}

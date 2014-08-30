@@ -40,8 +40,12 @@ public class BoardView extends View {
 			if (getTile(x, y)) {
 				if (!engine.isSrcSelected()) {
 					engine.setSrcPos(xTile, yTile);
+					try{
 					if(engine.canProcess()){
 						engine.process();
+					}
+					}catch(Exception e){
+						e.getMessage();
 					}
 				} else {
 					if (!engine.isDestSelected()) {
@@ -78,7 +82,7 @@ public class BoardView extends View {
 			for (int i = 0; i < cpt; i++) {
 				rect = new Rect(x0, y0 + 15, x0 + 125, y0 + 115 - 15);
 				if (rect.contains(x, y)) {
-					engine.setMessage("(" + i + "," + j + ")");
+					//engine.setMessage("(" + i + "," + j + ")");
 					xTile = i;
 					yTile = j;
 					return true;
@@ -87,7 +91,7 @@ public class BoardView extends View {
 			}
 			y0 += 115 - dy;
 		}
-		engine.setMessage("null");
+		//engine.setMessage("null");
 		xTile = -1;
 		yTile = -1;
 		return false;

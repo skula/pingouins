@@ -8,10 +8,6 @@ public class Player implements Comparable<Player>{
 	private int fishCount;
 	private boolean blocked;
 
-	public static void main(String[] args) {
-
-	}
-
 	public Player(int nAuks) {
 		this.nAuks = nAuks;
 		this.blocked = false;
@@ -22,6 +18,7 @@ public class Player implements Comparable<Player>{
 	}
 
 	public Player(int nAuks, int color) {
+		this.nAuks = nAuks;
 		this.auks = new Auk[nAuks];
 		for(int i=0; i<nAuks; i++){
 			auks[i]=new Auk();
