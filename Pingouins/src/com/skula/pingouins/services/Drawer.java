@@ -33,9 +33,10 @@ public class Drawer {
 		if(engine.isSrcSelected()){
 			drawSrcKeys(c);
 		}
-		c.drawText(engine.getMessage(), 980, 700, paint);
+		paint.setColor(Color.GREEN);
+		c.drawText(engine.getMessage(), 980, 680, paint);
 		drawPlayers(c);
-		// drawScore(c);
+		drawScore(c);
 	}
 	
 	private void drawSrcKeys(Canvas c) {
@@ -146,8 +147,28 @@ public class Drawer {
 	}
 
 	private void drawScore(Canvas c) {
+		int x0 = 1200;
+		int y0 = 200;
 		for (Player p : engine.getScore()) {
+			switch(p.getColor()){
+			case Cnst.COLOR_BLUE:
+				paint.setColor(Color.BLUE);
+				break;
+			case Cnst.COLOR_GREEN:
+				paint.setColor(Color.GREEN);
+				break;
+			case Cnst.COLOR_RED:
+				paint.setColor(Color.RED);
+				break;
+			case Cnst.COLOR_BLACK:
+				paint.setColor(Color.GRAY);
+				break;
+			default:
+				break;
+			}
 
+			c.drawText(p.getFishCount()+"", x0, y0, paint);
+			y0+=50;
 		}
 	}
 

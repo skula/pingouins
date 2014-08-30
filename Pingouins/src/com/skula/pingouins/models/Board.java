@@ -57,7 +57,7 @@ public class Board {
 		return cpt == 0;
 	}
 
-	public boolean isBlocked(Auk auk) {
+	public boolean isBlocked0(Auk auk) {
 		int x = auk.getxPos();
 		int y = auk.getyPos();
 		int cpt = 0;
@@ -102,6 +102,52 @@ public class Board {
 
 		return cpt == 0;
 	}
+	
+	public boolean isBlocked(Auk auk) {
+		int x = auk.getxPos();
+		int y = auk.getyPos();
+		int cpt = 0;
+
+		if (y - 1 >= 0) {
+			cpt += tiles[x][y - 1] != null && tiles[x][y - 1].isSafe() ? tiles[x][y - 1].getFishCount() : 0; // haut
+		}
+
+		if (x + 1 < Cnst.COLUMN_COUNT) {
+			cpt += tiles[x + 1][y] != null && tiles[x+1][y].isSafe() ? tiles[x + 1][y].getFishCount() : 0;
+		}
+
+		if (x - 1 >= 0) {
+			cpt += tiles[x - 1][y] != null && tiles[x-1][y].isSafe() ? tiles[x - 1][y].getFishCount() : 0; // gauche
+		}
+
+		if (y + 1 < Cnst.ROW_COUNT) {
+			cpt += tiles[x][y + 1] != null && tiles[x][y + 1].isSafe() ? tiles[x][y + 1].getFishCount() : 0; // bas
+		}
+
+		if (y % 2 != 0) { // ligne de 7 tuiles
+			if (x + 1 < Cnst.COLUMN_COUNT && y - 1 >= 0) {
+				cpt += tiles[x + 1][y - 1] != null && tiles[x+1][y - 1].isSafe() ? tiles[x + 1][y - 1]
+						.getFishCount() : 0; // haut droit
+			}
+
+			if (x + 1 < Cnst.COLUMN_COUNT && y + 1 < Cnst.ROW_COUNT) {
+				cpt += tiles[x + 1][y + 1] != null && tiles[x+1][y + 1].isSafe() ? tiles[x + 1][y + 1]
+						.getFishCount() : 0; // bas droite
+			}
+		} else {
+			if (x - 1 >= 0 && y - 1 >= 0) {
+				cpt = tiles[x - 1][y - 1] != null && tiles[x-1][y - 1].isSafe() ? tiles[x - 1][y - 1]
+						.getFishCount() : 0; // haut gauche
+			}
+
+			if (x - 1 >= 0 && y + 1 < Cnst.ROW_COUNT) {
+				cpt += tiles[x - 1][y + 1] != null && tiles[x-1][y + 1].isSafe() ? tiles[x - 1][y + 1]
+						.getFishCount() : 0; // bas gauche
+			}
+		}
+
+		return cpt == 0;
+	}
 
 	public void mockTiles() {
 		for (int j = 0; j < Cnst.COLUMN_COUNT; j++) {
@@ -125,7 +171,8 @@ public class Board {
 		if (!isReachable(x0, y0, x1, y1)) {
 			return false;
 		} else {
-			return isCollision(x0, y0, x1, y1);
+			//return isCollision(x0, y0, x1, y1);
+			return canMove2(x0, y0, x1, y1);
 		}
 	}
 
@@ -393,8 +440,143 @@ public class Board {
 	public int emptyTile(int x, int y) {
 		return tiles[x][y].empty();
 	}
-
+	
 	public boolean canMove2(int x0, int y0, int x1, int y1) {
+		int dx = x1 - x0;
+		int dy = y1 - y0;
+		boolean tmp = true;
+
+		if (y0 % 2 != 0) { // ligne de 7 tuiles
+			switch (Direction.getDirection(x0, y0, x1, y1)) {
+			case NORTH_EAST: // OK
+				for (int j = y0 - 1, i = x0 + 1; j >= y0 + dy; j--) {
+					if (!tiles[i][j].isSafe()) {
+						return false;
+					}
+					if (!tmp) {
+						i++;
+					}
+					tmp = !tmp;
+				}
+				break;
+			case NORTH_WEST: // OK
+				for (int i = x0, j = y0 - 1; j >= y0 + dy; j--) {
+					if (!tiles[i][j].isSafe()) {
+						return false;
+					}
+					if (tmp) {
+						i--;
+					}
+					tmp = !tmp;
+				}
+				break;
+			case SOUTH_EAST: // OK
+				for (int i = x0 + 1, j = y0 + 1; j <= y0 + dy; j++) {
+					if (!tiles[i][j].isSafe()) {
+						return false;
+					}
+					if (!tmp) {
+						i++;
+					}
+					tmp = !tmp;
+				}
+				break;
+			case SOUTH_WEST: // OK
+				for (int i = x0, j = y0 + 1; j <= y0 + dy; j++) {
+					if (!tiles[i][j].isSafe()) {
+						return false;
+					}
+					if (tmp) {
+						i--;
+					}
+					tmp = !tmp;
+				}
+				break;
+			case EAST: // OK
+				for (int i = x0 + 1; i <= x0 + dx; i++) {
+					if (!tiles[i][y0].isSafe()) {
+						return false;
+					}
+				}
+				break;
+			case WEST: // OK
+				for (int i = x0 - 1; i >= x0 + dx; i--) {
+					if (!tiles[i][y0].isSafe()) {
+						return false;
+					}
+				}
+				break;
+			default:
+				break;
+			}
+		} else {
+			switch (Direction.getDirection(x0, y0, x1, y1)) {
+			case NORTH_EAST: // OK
+				for (int j = y0 - 1, i = x0; j >= y0 + dy; j--) {
+					if (!tiles[i][j].isSafe()) {
+						return false;
+					}
+					if (tmp) {
+						i++;
+					}
+					tmp = !tmp;
+				}
+				break;
+			case NORTH_WEST: // OK
+				for (int j = y0 - 1, i = x0 - 1; j >= y0 + dy; j--) {
+					if (!tiles[i][j].isSafe()) {
+						return false;
+					}
+					if (!tmp) {
+						i--;
+					}
+					tmp = !tmp;
+				}
+				break;
+			case SOUTH_EAST: // OK
+				for (int i = x0, j = y0 + 1; j <= y0 + dy; j++) {
+					if (!tiles[i][j].isSafe()) {
+						return false;
+					}
+					if (tmp) {
+						i++;
+					}
+					tmp = !tmp;
+				}
+				break;
+			case SOUTH_WEST: // OK
+				for (int i = x0 - 1, j = y0 + 1; j <= y0 + dy; j++) {
+					if (!tiles[i][j].isSafe()) {
+						return false;
+					}
+					if (!tmp) {
+						i--;
+					}
+					tmp = !tmp;
+				}
+				break;
+			case EAST: // OK
+				for (int i = x0 + 1; i <= x0 + dx; i++) {
+					if (!tiles[i][y0].isSafe()) {
+						return false;
+					}
+				}
+				break;
+			case WEST: // OK
+				for (int i = x0 - 1; i >= x0 + dx; i--) {
+					if (!tiles[i][y0].isSafe()) {
+						return false;
+					}
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		return true;
+	}
+
+	/*public boolean canMove2(int x0, int y0, int x1, int y1) {
 		int dx = x1 - x0;
 		int dy = y1 - y0;
 		boolean tmp = true;
@@ -520,5 +702,5 @@ public class Board {
 			}
 		}
 		return true;
-	}
+	}*/
 }

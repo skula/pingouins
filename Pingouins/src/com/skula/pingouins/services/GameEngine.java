@@ -115,9 +115,11 @@ public class GameEngine {
 			board.setTakenTile(xSrc, ySrc);
 			leftToPosition++;
 			nextPlayer();
+			
 			if (leftToPosition == nPlayers * nAuks) {
 				timeline = Timeline.MOVEMENT;
 			}
+			
 			clearSrcPosition();
 			clearDestPosition();
 			setMessage();
@@ -128,15 +130,17 @@ public class GameEngine {
 			board.setTakenTile(xDest, yDest);
 			players[pToken].fish(board.emptyTile(xSrc, ySrc));
 			nextPlayer();
+			
 			if (isEndOfMatch()) {
 				timeline = Timeline.SCORE;
+				message="Cliquer pour score";
 			}
+			
 			clearSrcPosition();
 			clearDestPosition();
 			setMessage();
 			break;
 		case SCORE:
-			// TODO: ajouter les poissons sous les pingouins
 			for (int i = 0; i < nPlayers; i++) {
 				for (int j = 0; j < nAuks; j++) {
 					int ax = players[i].getAuk(j).getxPos();
