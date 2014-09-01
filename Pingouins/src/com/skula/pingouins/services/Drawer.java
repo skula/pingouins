@@ -27,9 +27,9 @@ public class Drawer {
 	}
 
 	public void draw(Canvas c) {
+		drawBackground(c);
 		drawTiles(c);
-		// drawAuk(c, new Rect(0+12,0,100+12, 100), R.drawable.auk_blue);
-		// drawKeys(c);
+		//drawKeys(c);
 		if(engine.isSrcSelected()){
 			drawSrcKeys(c);
 		}
@@ -40,48 +40,51 @@ public class Drawer {
 	}
 	
 	private void drawSrcKeys(Canvas c) {
-		int x0 = engine.getxSrc() * 125;
-		int y0 = engine.getySrc() * (115 - 28);
+		int x0 = engine.getxSrc() * (125-5) + Cnst.X0_TILES;
+		int y0 = engine.getySrc() * (115 - 50) + Cnst.Y0_TILES;
 		if (engine.getySrc() % 2 != 0) {
 			x0 += 125 / 2;
 		}
 		x0 += 22;
 		y0 += 4;
-		c.drawRect(new Rect(x0, y0, x0 + Cnst.PLAYER_WIDTH, y0 + Cnst.PLAYER_HIGHT), paint);
+		c.drawRect(new Rect(x0, y0, x0 + 100, y0 + 75), paint);
 	}
 
-	private void drawKeys(Canvas c) {
-		
-		int dx = 0;
-		int dy = 28;
+	private void drawKeys(Canvas c) {		
+		paint.setStyle(Paint.Style.STROKE);
+		paint.setColor(Color.RED);
+		int dx = 5;
+		int dy = 50;
 		int x = Cnst.X0_TILES;
 		int y = Cnst.Y0_TILES;
+		y += 10;
 		Rect rect = null;
 		for (int j = 0; j < Cnst.ROW_COUNT; j++) {
 			int cpt = Cnst.COLUMN_COUNT;
-			x = 0;
+			x = Cnst.X0_TILES;
 			if (j % 2 != 0) {
 				x += 125 / 2;
 				cpt--;
 			}
 			for (int i = 0; i < cpt; i++) {
-				rect = new Rect(x, y + 15, x + 125, y + 115 - 15);
+				rect = new Rect(x, y, x + 125-dx, y + 115-dy);
 				c.drawRect(rect, paint);
 				x += 125 - dx;
 			}
 			y += 115 - dy;
 		}
+		paint.setStyle(Paint.Style.FILL);
 	}
 
 	private void drawTiles(Canvas c) {
-		int dx = 0;
-		int dy = 28;
+		int dx = 5;
+		int dy = 50;
 		int x = Cnst.X0_TILES;
 		int y = Cnst.Y0_TILES;
 		Rect rect = null;
 		for (int j = 0; j < Cnst.ROW_COUNT; j++) {
 			int cpt = Cnst.COLUMN_COUNT;
-			x = 0;
+			x = Cnst.X0_TILES;
 			if (j % 2 != 0) {
 				x += 125 / 2;
 				cpt--;
@@ -114,14 +117,14 @@ public class Drawer {
 				if (engine.getPlayers()[i].getAuk(j).isInGame()) {
 					int x = engine.getPlayers()[i].getAuk(j).getxPos();
 					int y = engine.getPlayers()[i].getAuk(j).getyPos();
-					int x0 = x * 125;
-					int y0 = y * (115 - 28);
+					int x0 = x * (125-5) + Cnst.X0_TILES;
+					int y0 = y * (115 - 50) + Cnst.Y0_TILES;
 					if (y % 2 != 0) {
 						x0 += 125 / 2;
 					}
 
-					x0 += 22;
-					y0 += 4;
+					x0 += 15;
+					y0 -= 55;
 
 					rect = new Rect(x0, y0, x0 + Cnst.PLAYER_WIDTH, y0
 							+ Cnst.PLAYER_HIGHT);
@@ -172,6 +175,14 @@ public class Drawer {
 		}
 	}
 
+	private void drawBackground(Canvas canvas) {
+		/*canvas.drawBitmap(getPict(R.drawable.background), new Rect(0, 0, 1280,
+				800), new Rect(0, 0, 1280,
+						800), null);*/
+		paint.setColor(Color.BLUE);
+		canvas.drawRect(new Rect(0,0,1280,800), paint);
+	}
+	
 	private void drawTile(Canvas canvas, Rect rect, int id) {
 		canvas.drawBitmap(getPict(id), new Rect(0, 0, Cnst.TILE_WIDTH,
 				Cnst.TILE_HIGHT), rect, null);

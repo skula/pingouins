@@ -47,7 +47,7 @@ public class GameEngine {
 		}
 		this.pToken = 0;
 
-		// this.timeline = Timeline.CHOOSE_COLOR;
+		//this.timeline = Timeline.CHOOSE_COLOR;
 		this.timeline = Timeline.POSITIONING;
 
 		clearSrcPosition();
@@ -134,11 +134,12 @@ public class GameEngine {
 			if (isEndOfMatch()) {
 				timeline = Timeline.SCORE;
 				message="Cliquer pour score";
+			}else{
+				setMessage();
 			}
 			
 			clearSrcPosition();
 			clearDestPosition();
-			setMessage();
 			break;
 		case SCORE:
 			for (int i = 0; i < nPlayers; i++) {

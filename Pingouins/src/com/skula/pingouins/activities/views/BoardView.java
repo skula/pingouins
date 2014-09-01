@@ -67,20 +67,21 @@ public class BoardView extends View {
 	}
 
 	public boolean getTile(int x, int y) {
-		int dx = 0;
-		int dy = 28;
+		int dx = 5;
+		int dy = 50;
 		int x0 = Cnst.X0_TILES;
 		int y0 = Cnst.Y0_TILES;
+		y0 += 10;
 		Rect rect = null;
 		for (int j = 0; j < Cnst.ROW_COUNT; j++) {
 			int cpt = Cnst.COLUMN_COUNT;
-			x0 = 0;
+			x0 = Cnst.X0_TILES;
 			if (j % 2 != 0) {
 				x0 += 125 / 2;
 				cpt--;
 			}
 			for (int i = 0; i < cpt; i++) {
-				rect = new Rect(x0, y0 + 15, x0 + 125, y0 + 115 - 15);
+				rect = new Rect(x0, y0, x0 + 125-dx, y0 + 115-dy);
 				if (rect.contains(x, y)) {
 					//engine.setMessage("(" + i + "," + j + ")");
 					xTile = i;

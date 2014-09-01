@@ -46,10 +46,11 @@ public class Cnst {
 	}
 	
 	public static final int TILE_WIDTH = 100;
-	public static final int TILE_HIGHT = 92;
-	public static final int PLAYER_HIGHT = 100;
-	public static final int PLAYER_WIDTH = 80;
+	public static final int TILE_HIGHT = 98;
 	
-	public static final int X0_TILES = 0;
-	public static final int Y0_TILES = 0;
+	public static final int PLAYER_HIGHT = 120;
+	public static final int PLAYER_WIDTH = 95;
+	
+	public static final int X0_TILES = 75;
+	public static final int Y0_TILES = 75;
 }
