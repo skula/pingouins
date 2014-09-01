@@ -124,22 +124,22 @@ public class Drawer {
 					}
 
 					x0 += 15;
-					y0 -= 55;
+					y0 -= 65;
 
 					rect = new Rect(x0, y0, x0 + Cnst.PLAYER_WIDTH, y0
 							+ Cnst.PLAYER_HIGHT);
 					switch (engine.getPlayers()[i].getColor()) {
 					case Cnst.COLOR_BLUE:
-						drawAuk(c, rect, R.drawable.auk_blue);
+						drawAuk(c, rect, R.drawable.aukblue);
 						break;
 					case Cnst.COLOR_GREEN:
-						drawAuk(c, rect, R.drawable.auk_green);
+						drawAuk(c, rect, R.drawable.aukgreen);
 						break;
 					case Cnst.COLOR_RED:
-						drawAuk(c, rect, R.drawable.auk_red);
+						drawAuk(c, rect, R.drawable.aukred);
 						break;
-					case Cnst.COLOR_BLACK:
-						drawAuk(c, rect, R.drawable.auk_black);
+					case Cnst.COLOR_PURPLE:
+						drawAuk(c, rect, R.drawable.aukpurple);
 						break;
 					default:
 						break;
@@ -150,8 +150,8 @@ public class Drawer {
 	}
 
 	private void drawScore(Canvas c) {
-		int x0 = 1200;
-		int y0 = 200;
+		int x0 = 1180;
+		int y0 = 150;
 		for (Player p : engine.getScore()) {
 			switch(p.getColor()){
 			case Cnst.COLOR_BLUE:
@@ -163,15 +163,15 @@ public class Drawer {
 			case Cnst.COLOR_RED:
 				paint.setColor(Color.RED);
 				break;
-			case Cnst.COLOR_BLACK:
-				paint.setColor(Color.GRAY);
+			case Cnst.COLOR_PURPLE:
+				paint.setColor(Color.MAGENTA);
 				break;
 			default:
 				break;
 			}
-
-			c.drawText(p.getFishCount()+"", x0, y0, paint);
-			y0+=50;
+			drawScore(c, new Rect(x0,y0,x0+150,y0+80), R.drawable.score);
+			c.drawText(p.getFishCount()+"", x0+18, y0+50, paint);
+			y0+=75;
 		}
 	}
 
@@ -179,7 +179,7 @@ public class Drawer {
 		/*canvas.drawBitmap(getPict(R.drawable.background), new Rect(0, 0, 1280,
 				800), new Rect(0, 0, 1280,
 						800), null);*/
-		paint.setColor(Color.BLUE);
+		paint.setColor(Color.rgb(63, 170, 215));
 		canvas.drawRect(new Rect(0,0,1280,800), paint);
 	}
 	
@@ -191,6 +191,11 @@ public class Drawer {
 	private void drawAuk(Canvas canvas, Rect rect, int id) {
 		canvas.drawBitmap(getPict(id), new Rect(0, 0, Cnst.PLAYER_WIDTH,
 				Cnst.PLAYER_HIGHT), rect, null);
+	}
+	
+	private void drawScore(Canvas canvas, Rect rect, int id) {
+		canvas.drawBitmap(getPict(id), new Rect(0, 0, 100,
+				50), rect, null);
 	}
 
 	private Bitmap getPict(int id) {

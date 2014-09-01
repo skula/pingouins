@@ -129,12 +129,12 @@ public class GameEngine {
 			auk.move(xDest, yDest);
 			board.setTakenTile(xDest, yDest);
 			players[pToken].fish(board.emptyTile(xSrc, ySrc));
-			nextPlayer();
 			
 			if (isEndOfMatch()) {
 				timeline = Timeline.SCORE;
 				message="Cliquer pour score";
 			}else{
+				nextPlayer();
 				setMessage();
 			}
 			
@@ -163,10 +163,13 @@ public class GameEngine {
 
 	private boolean isEndOfMatch() {
 		for (int i = 0; i < nPlayers; i++) {
-			for (int j = 0; j < nAuks; j++) {
+			/*for (int j = 0; j < nAuks; j++) {
 				if (!board.isBlocked(players[i].getAuk(j))) {
 					return false;
 				}
+			}*/
+			if (!board.isBlocked(players[i], nAuks)) {
+				return false;
 			}
 		}
 		return true;

@@ -13,18 +13,18 @@ public class Cnst {
 	public static final int COLOR_RED = 0;
 	public static final int COLOR_GREEN = 1;
 	public static final int COLOR_BLUE = 2;
-	public static final int COLOR_BLACK = 3;
+	public static final int COLOR_PURPLE = 3;
 	
 	public static int getPictureId(int color){
 		switch (color) {
 		case Cnst.COLOR_BLUE:
-			return R.drawable.auk_blue;
+			return R.drawable.aukblue;
 		case Cnst.COLOR_GREEN:
-			return R.drawable.auk_green;
+			return R.drawable.aukgreen;
 		case Cnst.COLOR_RED:
-			return R.drawable.auk_red;
-		case Cnst.COLOR_BLACK:
-			return R.drawable.auk_black;
+			return R.drawable.aukred;
+		case Cnst.COLOR_PURPLE:
+			return R.drawable.aukpurple;
 		default:
 			return -1;
 		}
@@ -38,8 +38,8 @@ public class Cnst {
 			return "vert";
 		case Cnst.COLOR_RED:
 			return "rouge";
-		case Cnst.COLOR_BLACK:
-			return "noir";
+		case Cnst.COLOR_PURPLE:
+			return "violet";
 		default:
 			return "null";
 		}
@@ -47,9 +47,9 @@ public class Cnst {
 	
 	public static final int TILE_WIDTH = 100;
 	public static final int TILE_HIGHT = 98;
-	
-	public static final int PLAYER_HIGHT = 120;
-	public static final int PLAYER_WIDTH = 95;
+
+	public static final int PLAYER_WIDTH = 100;
+	public static final int PLAYER_HIGHT = 130;
 	
 	public static final int X0_TILES = 75;
 	public static final int Y0_TILES = 75;
