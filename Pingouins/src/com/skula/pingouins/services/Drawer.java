@@ -45,9 +45,10 @@ public class Drawer {
 		if (engine.getySrc() % 2 != 0) {
 			x0 += 125 / 2;
 		}
-		x0 += 22;
-		y0 += 4;
-		c.drawRect(new Rect(x0, y0, x0 + 100, y0 + 75), paint);
+		
+		x0+=10;
+		y0+=5;
+		c.drawBitmap(getPict(R.drawable.tilesel), new Rect(0, 0, 100, 98), new Rect(x0, y0, x0 + 100, y0 + 98), paint);
 	}
 
 	private void drawKeys(Canvas c) {		
@@ -150,28 +151,30 @@ public class Drawer {
 	}
 
 	private void drawScore(Canvas c) {
-		int x0 = 1180;
+		int x0 = 1140;
 		int y0 = 150;
+		int id = 0;
 		for (Player p : engine.getScore()) {
 			switch(p.getColor()){
 			case Cnst.COLOR_BLUE:
-				paint.setColor(Color.BLUE);
+				id = R.drawable.scoreblue;
 				break;
 			case Cnst.COLOR_GREEN:
-				paint.setColor(Color.GREEN);
+				id = R.drawable.scoregreen;
 				break;
 			case Cnst.COLOR_RED:
-				paint.setColor(Color.RED);
+				id = R.drawable.scorered;
 				break;
 			case Cnst.COLOR_PURPLE:
-				paint.setColor(Color.MAGENTA);
+				id = R.drawable.scorepurple;
 				break;
 			default:
 				break;
 			}
-			drawScore(c, new Rect(x0,y0,x0+150,y0+80), R.drawable.score);
-			c.drawText(p.getFishCount()+"", x0+18, y0+50, paint);
-			y0+=75;
+			drawScore(c, new Rect(x0,y0,x0+150,y0+80), id);
+			paint.setColor(Color.WHITE);
+			c.drawText(p.getFishCount()+"", x0+18+70, y0+50, paint);
+			y0+=90;
 		}
 	}
 
