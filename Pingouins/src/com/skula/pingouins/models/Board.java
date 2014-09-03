@@ -34,7 +34,7 @@ public class Board {
 		}
 
 		if (x + 1 < Cnst.COLUMN_COUNT) {
-			cpt += tiles[x + 1][y] != null && tiles[x+1][y].isSafe() ? tiles[x + 1][y].getFishCount() : 0;
+			cpt += tiles[x + 1][y] != null && tiles[x+1][y].isSafe() ? tiles[x + 1][y].getFishCount() : 0; // droite
 		}
 
 		if (x - 1 >= 0) {
@@ -57,7 +57,7 @@ public class Board {
 			}
 		} else {
 			if (x - 1 >= 0 && y - 1 >= 0) {
-				cpt = tiles[x - 1][y - 1] != null && tiles[x-1][y - 1].isSafe() ? tiles[x - 1][y - 1]
+				cpt += tiles[x - 1][y - 1] != null && tiles[x-1][y - 1].isSafe() ? tiles[x - 1][y - 1]
 						.getFishCount() : 0; // haut gauche
 			}
 
@@ -81,7 +81,44 @@ public class Board {
 			}
 		}
 
-		tiles[4][1].setFishCount(1);
+		//tiles[0][0].setFishCount(1);
+		tiles[1][0].setFishCount(1);
+		tiles[2][0].setFishCount(1);
+		tiles[4][2].setFishCount(1);
+		tiles[5][2].setFishCount(1);
+		tiles[6][3].setFishCount(1);
+		tiles[6][4].setFishCount(1);
+		tiles[5][5].setFishCount(1);
+		tiles[5][6].setFishCount(1);
+	}
+	
+	public void shuffleTiles() {
+		List<Integer> list = new ArrayList<Integer>();
+		for (int i = 0; i < Cnst.THREE_FISH_TILE_COUNT; i++) {
+			list.add(3);
+		}
+		for (int i = 0; i < Cnst.TWO_FISH_TILE_COUNT; i++) {
+			list.add(2);
+		}
+		for (int i = 0; i < Cnst.ONE_FISH_TILE_COUNT; i++) {
+			list.add(1);
+		}
+
+		long seed = System.nanoTime();
+		Collections.shuffle(list, new Random(seed));
+		seed = System.nanoTime();
+
+		int cpt = 0;
+		for (int j = 0; j < Cnst.COLUMN_COUNT; j++) {
+			for (int i = 0; i < Cnst.ROW_COUNT; i++) {
+				if (i % 2 != 0 && j == Cnst.COLUMN_COUNT - 1) {
+
+				} else {
+					tiles[j][i] = new Tile(list.get(cpt));
+					cpt++;
+				}
+			}
+		}
 	}
 
 	public boolean isPositionable(int x, int y) {
@@ -342,54 +379,6 @@ public class Board {
 			}
 		}
 		return true;
-	}
-
-	public void shuffleTiles() {
-		List<Integer> list = new ArrayList<Integer>();
-		for (int i = 0; i < Cnst.THREE_FISH_TILE_COUNT; i++) {
-			list.add(3);
-		}
-		for (int i = 0; i < Cnst.TWO_FISH_TILE_COUNT; i++) {
-			list.add(2);
-		}
-		for (int i = 0; i < Cnst.ONE_FISH_TILE_COUNT; i++) {
-			list.add(1);
-		}
-
-		long seed = System.nanoTime();
-		Collections.shuffle(list, new Random(seed));
-		seed = System.nanoTime();
-
-		int cpt = 0;
-		for (int j = 0; j < Cnst.COLUMN_COUNT; j++) {
-			for (int i = 0; i < Cnst.ROW_COUNT; i++) {
-				if (i % 2 != 0 && j == Cnst.COLUMN_COUNT - 1) {
-
-				} else {
-					tiles[j][i] = new Tile(list.get(cpt));
-					cpt++;
-				}
-			}
-		}
-	}
-
-	public void show() {
-		System.out.println("**** DAMIER ****");
-		for (int i = 0; i < Cnst.ROW_COUNT; i++) {
-			for (int j = 0; j < Cnst.COLUMN_COUNT; j++) {
-				if (i % 2 != 0 && j == 0) {
-					System.out.print(" ");
-				}
-
-				if (i % 2 != 0 && j == Cnst.COLUMN_COUNT - 1) {
-
-				} else {
-					System.out.print(tiles[j][i].getFishCount() + " ");
-				}
-			}
-			System.out.println();
-		}
-		System.out.println("****************");
 	}
 
 	public Tile getTile(int x, int y) {

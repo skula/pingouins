@@ -31,6 +31,7 @@ public class GameEngine {
 		this.message = "";
 		this.board = new Board();
 		this.board.shuffleTiles();
+		//this.board.mockTiles();
 
 		this.nPlayers = nPlayers;
 		if (nPlayers == 2) {
