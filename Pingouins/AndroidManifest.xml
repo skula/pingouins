@@ -17,6 +17,12 @@
             android:name="com.skula.pingouins.activities.BoardActivity"
             android:label="@string/app_name" 
             android:screenOrientation="landscape">
+		</activity>
+		
+        <activity
+            android:name="com.skula.pingouins.activities.PlayersActivity"
+            android:label="@string/app_name" 
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
