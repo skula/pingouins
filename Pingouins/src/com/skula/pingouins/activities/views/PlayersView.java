@@ -1,6 +1,7 @@
 package com.skula.pingouins.activities.views;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,17 +13,16 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.skula.pingouins.R;
+import com.skula.pingouins.activities.BoardActivity;
+import com.skula.pingouins.constants.Cnst;
 
 public class PlayersView extends View {
 	private Resources res;
 	private Paint paint;
-	private String message;
-
 	public PlayersView(Context context) {
 		super(context);
 		res = context.getResources();
 		paint = new Paint();
-		message = "plop";
 	}
 
 	@Override
@@ -34,7 +34,6 @@ public class PlayersView extends View {
 		
 		paint.setColor(Color.RED);
 		paint.setTextSize(22f);
-		canvas.drawText(message, 50, 50, paint);
 
 	}
 
@@ -53,9 +52,9 @@ public class PlayersView extends View {
 		case MotionEvent.ACTION_UP:
 			int n = getCountPlayers(x,y);
 			if(n>0){
-				message = "nombre de joueurs: " +n;
-			}else{
-				message = "NULL";
+				Intent intent = new Intent(getContext(), BoardActivity.class);
+				intent.putExtra(Cnst.BUNDLE_NAME_PLAYERS_COUNT, n+"");
+				getContext().startActivity(intent);
 			}
 			invalidate();
 			break;

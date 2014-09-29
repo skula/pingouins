@@ -53,4 +53,6 @@ public class Cnst {
 	
 	public static final int X0_TILES = 75;
 	public static final int Y0_TILES = 75;
+	
+	public static final String BUNDLE_NAME_PLAYERS_COUNT="nplayers";
 }
