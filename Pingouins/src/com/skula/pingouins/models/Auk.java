@@ -1,22 +1,21 @@
 package com.skula.pingouins.models;
 
-public class Auk {
+public class Auk implements Comparable<Auk>{
 	private int xPos;
 	private int yPos;
 	private boolean inGame;
+	private int color;
 
-	public static void main(String[] args) {
-
-	}
-
-	public Auk() {
+	public Auk(int color) {
 		this.inGame = false;
+		this.color = color;
 	}
 
-	public Auk(int xPos, int yPos) {
+	public Auk(int xPos, int yPos, int color) {
 		this.inGame = false;
 		this.xPos = xPos;
 		this.yPos = yPos;
+		this.color = color;
 	}
 
 	public void move(int x, int y) {
@@ -48,5 +47,23 @@ public class Auk {
 		this.inGame = inGame;
 	}
 	
+	public int getColor() {
+		return color;
+	}
 	
+	public int compareTo(Auk o) {
+		if(o.getyPos()>this.getyPos()){
+			return -1;
+		}else{
+			if(o.getyPos()<this.getyPos()){
+				return 1;
+			}else{
+				if(o.getxPos()>this.getxPos()){
+					return -1;
+				}else{
+					return 1;
+				}
+			}
+		}
+	}
 }

@@ -8,20 +8,20 @@ public class Player implements Comparable<Player>{
 	private int fishCount;
 	private boolean blocked;
 
-	public Player(int nAuks) {
+	/*public Player(int nAuks) {
 		this.nAuks = nAuks;
 		this.blocked = false;
 		this.auks = new Auk[nAuks];
 		for (int i = 0; i < nAuks; i++) {
 			auks[i] = new Auk();
 		}
-	}
+	}*/
 
 	public Player(int nAuks, int color) {
 		this.nAuks = nAuks;
 		this.auks = new Auk[nAuks];
 		for(int i=0; i<nAuks; i++){
-			auks[i]=new Auk();
+			auks[i]=new Auk(color);
 		}
 		this.color = color;
 	}

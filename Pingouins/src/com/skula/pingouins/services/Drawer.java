@@ -1,8 +1,6 @@
 package com.skula.pingouins.services;
 
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -10,20 +8,23 @@ import android.graphics.Rect;
 
 import com.skula.pingouins.R;
 import com.skula.pingouins.constants.Cnst;
+import com.skula.pingouins.constants.PictureLibrary;
+import com.skula.pingouins.models.Auk;
 import com.skula.pingouins.models.Player;
 
 public class Drawer {
 	private GameEngine engine;
+	private PictureLibrary lib;
 	private Paint paint;
 	private Resources res;
 
 	public Drawer(Resources res, GameEngine engine) {
 		this.engine = engine;
+		this.lib = new PictureLibrary(res);
 		this.res = res;
 		this.paint = new Paint();
 		paint.setColor(Color.RED);
 		paint.setTextSize(30f);
-		//paint.setStyle(Paint.Style.STROKE);
 	}
 
 	public void draw(Canvas c) {
@@ -48,7 +49,7 @@ public class Drawer {
 		
 		x0+=10;
 		y0+=5;
-		c.drawBitmap(getPict(R.drawable.tilesel), new Rect(0, 0, 100, 98), new Rect(x0, y0, x0 + 100, y0 + 98), paint);
+		c.drawBitmap(lib.get(R.drawable.tilesel), new Rect(0, 0, 100, 98), new Rect(x0, y0, x0 + 100, y0 + 98), paint);
 	}
 
 	private void drawKeys(Canvas c) {		
@@ -113,6 +114,38 @@ public class Drawer {
 
 	private void drawPlayers(Canvas c) {
 		Rect rect = null;
+		for(Auk auk : engine.getAuksByOrder()){
+			int x = auk.getxPos();
+			int y = auk.getyPos();
+			int x0 = x * (125-5) + Cnst.X0_TILES;
+			int y0 = y * (115 - 50) + Cnst.Y0_TILES;
+			if (y % 2 != 0) {
+				x0 += 125 / 2;
+			}
+			x0 += 15;
+			y0 -= 65;
+			rect = new Rect(x0, y0, x0 + Cnst.PLAYER_WIDTH, y0 + Cnst.PLAYER_HIGHT);
+			switch (auk.getColor()) {
+			case Cnst.COLOR_BLUE:
+				drawAuk(c, rect, R.drawable.aukblue);
+				break;
+			case Cnst.COLOR_GREEN:
+				drawAuk(c, rect, R.drawable.aukgreen);
+				break;
+			case Cnst.COLOR_RED:
+				drawAuk(c, rect, R.drawable.aukred);
+				break;
+			case Cnst.COLOR_PURPLE:
+				drawAuk(c, rect, R.drawable.aukpurple);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	
+	/*private void drawPlayers(Canvas c) {
+		Rect rect = null;
 		for (int i = 0; i < engine.getnPlayers(); i++) {
 			for (int j = 0; j < engine.getnAuks(); j++) {
 				if (engine.getPlayers()[i].getAuk(j).isInGame()) {
@@ -148,7 +181,7 @@ public class Drawer {
 				}
 			}
 		}
-	}
+	}*/
 
 	private void drawScore(Canvas c) {
 		int x0 = 1140;
@@ -179,29 +212,22 @@ public class Drawer {
 	}
 
 	private void drawBackground(Canvas canvas) {
-		/*canvas.drawBitmap(getPict(R.drawable.background), new Rect(0, 0, 1280,
-				800), new Rect(0, 0, 1280,
-						800), null);*/
 		paint.setColor(Color.rgb(63, 170, 215));
 		canvas.drawRect(new Rect(0,0,1280,800), paint);
 	}
 	
 	private void drawTile(Canvas canvas, Rect rect, int id) {
-		canvas.drawBitmap(getPict(id), new Rect(0, 0, Cnst.TILE_WIDTH,
+		canvas.drawBitmap(lib.get(id), new Rect(0, 0, Cnst.TILE_WIDTH,
 				Cnst.TILE_HIGHT), rect, null);
 	}
 
 	private void drawAuk(Canvas canvas, Rect rect, int id) {
-		canvas.drawBitmap(getPict(id), new Rect(0, 0, Cnst.PLAYER_WIDTH,
+		canvas.drawBitmap(lib.get(id), new Rect(0, 0, Cnst.PLAYER_WIDTH,
 				Cnst.PLAYER_HIGHT), rect, null);
 	}
 	
 	private void drawScore(Canvas canvas, Rect rect, int id) {
-		canvas.drawBitmap(getPict(id), new Rect(0, 0, 100,
+		canvas.drawBitmap(lib.get(id), new Rect(0, 0, 100,
 				50), rect, null);
-	}
-
-	private Bitmap getPict(int id) {
-		return BitmapFactory.decodeStream(res.openRawResource(id));
 	}
 }

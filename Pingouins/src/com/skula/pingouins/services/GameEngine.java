@@ -198,6 +198,19 @@ public class GameEngine {
 		Collections.sort(res);
 		return res;
 	}
+	
+	public List<Auk> getAuksByOrder() {
+		List<Auk> res = new ArrayList<Auk>();
+		for(int i=0; i<nPlayers; i++){
+			for(int j=0; j< nAuks; j++){
+				if (getPlayers()[i].getAuk(j).isInGame()) {
+					res.add(players[i].getAuk(j));
+				}
+			}
+		}
+		Collections.sort(res);
+		return res;
+	}
 
 	public Tile getTile(int x, int y) {
 		return board.getTile(x, y);
