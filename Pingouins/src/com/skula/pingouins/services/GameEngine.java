@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import android.content.Context;
+import android.content.Intent;
+
+import com.skula.pingouins.activities.BoardActivity;
+import com.skula.pingouins.activities.PlayersActivity;
 import com.skula.pingouins.constants.Cnst;
 import com.skula.pingouins.enums.Timeline;
 import com.skula.pingouins.models.Auk;
@@ -12,6 +17,7 @@ import com.skula.pingouins.models.Player;
 import com.skula.pingouins.models.Tile;
 
 public class GameEngine {
+	private Context context;
 	private Timeline timeline;
 	private int nPlayers;
 	private int nAuks;
@@ -27,7 +33,8 @@ public class GameEngine {
 
 	private String message;
 
-	public GameEngine(int nPlayers) {
+	public GameEngine(int nPlayers, Context context) {
+		this.context = context;
 		this.message = "";
 		this.board = new Board();
 		this.board.shuffleTiles();
@@ -132,8 +139,8 @@ public class GameEngine {
 			players[pToken].fish(board.emptyTile(xSrc, ySrc));
 			
 			if (isEndOfMatch()) {
-				timeline = Timeline.SCORE;
-				message="Cliquer pour score";
+				timeline = Timeline.END;
+				message="Cliquer pour demarrer une nouvelle partie";
 			}else{
 				nextPlayer();
 				setMessage();
@@ -154,8 +161,8 @@ public class GameEngine {
 			// ...
 			break;
 		case END:
-			// TODO: retourner sur ecran de selection du nombre de joueurs
-			// ..
+			Intent intent = new Intent(context, PlayersActivity.class);
+			context.startActivity(intent);
 			break;
 		default:
 			break;

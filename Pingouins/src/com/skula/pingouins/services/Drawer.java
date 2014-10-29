@@ -24,7 +24,6 @@ public class Drawer {
 		this.res = res;
 		this.paint = new Paint();
 		paint.setColor(Color.RED);
-		paint.setTextSize(30f);
 	}
 
 	public void draw(Canvas c) {
@@ -34,8 +33,9 @@ public class Drawer {
 		if(engine.isSrcSelected()){
 			drawSrcKeys(c);
 		}
-		paint.setColor(Color.GREEN);
-		c.drawText(engine.getMessage(), 980, 680, paint);
+		paint.setColor(Color.DKGRAY);
+		paint.setTextSize(45f);
+		c.drawText(engine.getMessage(), 350, 700, paint);
 		drawPlayers(c);
 		drawScore(c);
 	}
@@ -206,6 +206,7 @@ public class Drawer {
 			}
 			drawScore(c, new Rect(x0,y0,x0+150,y0+80), id);
 			paint.setColor(Color.WHITE);
+			paint.setTextSize(30f);
 			c.drawText(p.getFishCount()+"", x0+18+70, y0+50, paint);
 			y0+=90;
 		}
